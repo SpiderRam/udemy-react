@@ -31,5 +31,7 @@
   - Option 2:
 
 ## Extras
-- Used `toDateString()` to format dates
-- Used `Intl.NumberFormat()` to format amounts
+
+- commit e643a21:
+  - Used `toDateString()` to format dates
+  - Used `Intl.NumberFormat()` to format amounts
