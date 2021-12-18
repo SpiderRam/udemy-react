@@ -1,12 +1,36 @@
 # TWO
 
-> Covers sections 46-
+> Covers sections 46-62
 
-## Issues encountered:
+___
+## Component Types
 
-## Notes:
+### Stateless vs. Stateful
 
-### `useState(props.prop)`
+Stateless components (i.e. ExpenseItem, ExpenseFilter) have no state.
+- also called 'presentational' or 'dumb' components
+- they primarily exist just to output data
+- receive input via props
+- in general, apps will have more stateless than stateful components, because they are more reuseable, and state will be passed via props.
+
+Stateful components (i.e Expenses, ExpenseForm) depend on state.
+- they can change their own state
+- re-renders when the state changes
+- can pass properties of that state to child components via props
+
+![when to use](./public/readmeImgs/stateless-stateful.png)
+
+[Source](https://medium.com/@cgcrutch18/stateful-vs-stateless-react-components-13f647f7fc4)
+
+### Controlled vs. Uncontrolled
+
+These are similar to Stateful vs. Stateless components, respectively.
+- whenever you use two-way binding, you are effectively creating a controlled component
+  - as in ExpensesFilter, the value which is displayed in the component is passed to and received from a parent component
+  - the logic for which value to display is handled in Expenses
+- 
+___
+## `useState(props.prop)`
 ```javascript
 import React, { useState } from 'react'
 ```
@@ -64,5 +88,3 @@ const inputChangeHandler = (e) => {
 </div>
 
 ```
-
-## Extras
