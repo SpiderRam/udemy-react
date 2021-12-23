@@ -1,4 +1,4 @@
-import { React, useState} from 'react'
+import { React, useState } from 'react'
 import './Expenses.css'
 import ExpenseItem from "../Expenses/ExpenseItem"
 import Card from '../UI/Card'
@@ -17,9 +17,9 @@ const Expenses = (props) => {
         <div>
             <Card className="expenses">
             <ExpensesFilter year={selectedYear} onYearSelected={yearSelectedHandler} />
-                {expenses.map((expense, i) => {
-                    return <ExpenseItem id={expense.id} key={i} title={expense.title} amount={expense.amt} date={expense.date} />
-                })} 
+            {expenses.map((expense) => {
+                return <ExpenseItem key={expense.id} title={expense.title} amount={expense.amt} date={expense.date} />
+            })} 
             </Card>
         </div>
     )
