@@ -1,6 +1,6 @@
 # THREE
 
-> Covers sections 63-
+> Covers sections 63-72 Rendering Lists and Conditional Content
 
 ---
 
