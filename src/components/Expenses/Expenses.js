@@ -5,6 +5,11 @@ import Card from '../UI/Card'
 import ExpensesFilter from './ExpensesFilter'
 
 const Expenses = (props) => {
+    const [selectedYear, setSelectedYear] = useState('All')
+    const yearSelectedHandler = (year) => {
+        setSelectedYear(year)
+    }
+    
     const expenses = props.expenses
     const filteredExpenses = exps => {
         if(selectedYear === 'All') {
@@ -16,18 +21,20 @@ const Expenses = (props) => {
         }
     }
 
-    const [selectedYear, setSelectedYear] = useState('All')
-    const yearSelectedHandler = (year) => {
-        setSelectedYear(year)
+    const zeroMessage = selectedYear === 'All' ? `No expenses found.` : `No expenses found for ${selectedYear}.`
+    let expensesContent = <p>{zeroMessage}</p>
+
+    if (filteredExpenses(expenses).length > 0) {
+        expensesContent = filteredExpenses(expenses).length > 0 && filteredExpenses(expenses).map((expense) => {
+            return <ExpenseItem key={expense.id} title={expense.title} amount={expense.amt} date={expense.date} />
+        })
     }
     
     return (
         <div>
             <Card className="expenses">
             <ExpensesFilter year={selectedYear} onYearSelected={yearSelectedHandler} />
-            {filteredExpenses(expenses).map((expense) => {
-                return <ExpenseItem key={expense.id} title={expense.title} amount={expense.amt} date={expense.date} />
-            })} 
+            {expensesContent}
             </Card>
         </div>
     )
