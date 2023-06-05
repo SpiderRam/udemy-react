@@ -1,7 +1,12 @@
 # udemy-react
 
-> Section 10 (116-119): useReducer
+> Section 10 (116-119): `useReducer`
+
 > Section 10 (120-125): Context API
+
+> Section 10 (126-128): Rules of hooks, `forwardRef`, `useImperativeHandle`
+
+---
 
 ## useState vs. useReducer
 
@@ -14,6 +19,8 @@ There is no hard rule or clear wrong or right about when to use one or the other
 | Great for independent pieces of state/data. | Ideal when you have related pieces of state/data. |
 | Great if state updates are easy and limited to a few kinds of updates. | Helpful when you have more complex state updates |
 <!-- prettier-ignore-end -->
+
+---
 
 ## Context API
 
@@ -147,3 +154,91 @@ Don't overuse Context. Things to keep in mind:
     -   Redux is the tool for these kinds of changes, instead.
 -   Context should not be used to replace all communications and props.
     -   Even short prop chains might be acceptable, evaluate on a case by case basis.
+
+---
+
+## useImperativeHandle
+
+> Example: focusing with `useRef`
+
+If you have a reusable input component, and you want to control the focus behavior of its instances, the usual way is to call that method in the parent.
+
+```js
+/** parent */
+
+const emailRef = useRef()
+
+// in handler
+emailRef.current.focus()
+
+<Input
+    inputRef={emailRef}
+/>
+```
+
+```js
+/** custom input component */
+
+<input ref={props.inputRef} />
+```
+
+You can alternatively use a hook called `useImperativeHandle` in conjunction with `forwardRef` to expose custom methods or properties.
+
+🚩 NOTE: this hook should rarely if ever be used. This example is only to show a working implementation.
+
+```js
+/** parent */
+
+const emailRef = useRef()
+
+// in handler
+emailRef.current.focusField() // <-- 🔶 now using custom name
+
+<Input
+    ref={emailRef} // <-- 🔶 now `ref`, not `inputRef`
+/>
+```
+
+```js
+/** custom input component */
+import { forwardRef, useImperativeHandle, useRef } from 'react'
+
+const Input = (props, ref) => { // <-- 🔶 IMPORTANT: rare use of optional second arg
+    const inputRef = useRef()
+
+    const activate = () => {
+        inputRef.current.focus()
+    }
+
+    /**
+     * @param ref The first param is the ref you are overriding. The second arg
+     * of the component function is the ref that would normally be assigned to it.
+     *
+     * @param () => {} A method which will return any methods or values
+     * your component needs to expose.
+     *
+     * @param [] Optional third arg: a dependency array which works exactly the
+     * same way as that of `useEffect`.  If null, method runs on every render.
+    */
+    useImperativeHandle(ref, () => { // <-- 🔶 must return an object
+        return {
+            focusField: activate // <-- 🔶 names can be anything
+        }
+    })
+
+    <input
+        ref={inputRef} // <-- 🔶 now `inputRef`, not `props.inputRef`
+    />
+}
+
+export default forwardRef(Input) // <-- 🔶 IMPORTANT: component function must be wrapped with `forwardRef`
+```
+
+---
+
+## Rules of Hooks
+
+-   Only call react hooks in react function components, or custom hooks.
+-   Only call react hooks at the top level of these. Do not call in block statements or nested functions. For example:
+    -   you cannot use another hook inside of a useEffect method.
+    -   you cannot use a hook inside of an if block.
